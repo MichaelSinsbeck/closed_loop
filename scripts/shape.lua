@@ -10,18 +10,20 @@ function initShapes()
 		{136,0,170},
 	}
 	outline = {}
-	-- rectangle
-	outline[1] = {-.8,-.8,-.8,.8,.8,.8,.8,-.8}
-	-- triangle
-	outline[2] = {0,-.8,-0.8,0.8,0.8,0.8}
 	-- circle
-	outline[3] = {}
+	outline[1] = {}
 	local nSeg = 40
 	local factor = 0.9
 	for i=0,nSeg-1 do
-		outline[3][2*i+1] = math.sin(i*math.pi*2/nSeg) * factor
-		outline[3][2*i+2] = -math.cos(i*math.pi*2/nSeg) * factor
+		outline[1][2*i+1] = math.sin(i*math.pi*2/nSeg) * factor
+		outline[1][2*i+2] = -math.cos(i*math.pi*2/nSeg) * factor
 	end
+	
+	
+	-- triangle
+	outline[2] = {0,-.8,-0.8,0.8,0.8,0.8}
+-- rectangle
+	outline[3] = {-.8,-.8,-.8,.8,.8,.8,.8,-.8}
 
 	-- star
 	outline[4] = {}

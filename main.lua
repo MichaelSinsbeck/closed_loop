@@ -1,9 +1,12 @@
 require 'scripts/shape'
+require 'scripts/logic'
+require 'scripts/utility'
 colors = require 'scripts/colors'
 
 function love.load()
 	size = 3
 	gridSize = 70
+	tol = 1e-2 -- tolerance for angle check
 	x1 = gridSize
 	x2 = 0
 	y1 = -0.5*gridSize
@@ -13,37 +16,42 @@ function love.load()
 	radius = 3
 	initShapes()
 	love.graphics.setBackgroundColor(colors.bg)
-	level = {}
-	for i = 1,5 do
-		level[i] = {
+	nodes = {}
+	for x = -size,size do
+		local lb,ub = yBound(x,size)
+		for y = lb,ub do
+			nodes[#nodes+1] = {x=x,y=y,shape=3,cursor=false,lines={}}
+		end
+	end
+	
+	--[[ Testlevel
+	nodes[1] = {x=0,y=0,shape=1,cursor=false,lines={}}
+	nodes[2] = {x=1,y=0,shape=2,cursor=false,lines={}}
+	nodes[3] = {x=1,y=1,shape=3,cursor=false,lines={}}
+	nodes[4] = {x=2,y=0,shape=1,cursor=false,lines={}}--]]
+	
+	--[[for i = 1,5 do
+		nodes[i] = {
 			x = love.math.random(2*size-1)-size,
 			y = love.math.random(2*size-1)-size,
 			shape = love.math.random(3),
 			cursor = false,
+			lines = {},
 		}
-	end
+	end--]]
 	lines = {}
 	drawingLine = false
 	countLines()
 end
 
-function yBound(x,size)
-	local lb = -size
-	local ub = size
-	if lb < x-size then lb = x-size end
-	if ub > x+size then ub = x+size end
-	return lb,ub
-end
-
-function pyth(dx,dy)
-	return math.sqrt(dx^2+dy^2)
-end
 
 function love.update(dt)
-	-- detect closest line
+	-- detect closest line (only if not drawing a line
 	activeLine = nil
-	local distance = 20
 	local mx,my = love.mouse.getPosition()
+	if not drawingLine then
+	local distance = 20
+	
 	for i,v in ipairs(lines) do
 		v.cursor = false
 		local sx1,sy1 = xyToScreen(v.n1.x,v.n1.y)
@@ -58,12 +66,13 @@ function love.update(dt)
 			distance = math.abs(orth)
 		end
 	end
+	end
 
 	-- detect closest node
 	activeNode = nil
 	local distance = 25
 
-	for i,v in ipairs(level) do
+	for i,v in ipairs(nodes) do
 		v.cursor = false
 		sx,sy = xyToScreen(v.x,v.y)
 		local thisDistance = pyth(mx-sx,my-sy)
@@ -115,8 +124,8 @@ function love.draw()
 		love.graphics.line(sx1,sy1,sx2,sy2)
 	end
 	
-
-	for i,v in ipairs(level) do
+	-- draw nodes
+	for i,v in ipairs(nodes) do
 		local sx,sy = xyToScreen(v.x,v.y)
 		local thisColor
 		if v.cursor then
@@ -124,92 +133,24 @@ function love.draw()
 
 		elseif v.count > 2 then
 			thisColor = 'red'
+		elseif v.ok then
+			thisColor = 'green'
 		else
 			thisColor = 'gray'
 		end
 		drawShape(sx,sy,thisColor,v.shape)
 	end
+	if levelWon then
+		love.graphics.print('Won',10,10)
+	else
+		love.graphics.print('Not Won',10,10)
+	end
 end
 
-function xyToScreen(x,y)
-	return x*x1+y*y1+cx, x*x2+y*y2+cy
-end
 
 function love.keypressed( key, repeated )
 	if key == 'escape' then
 		love.event.quit()
-	end
-end
-
-function insertLine(node1,node2)
-	local sx1,sy1 = xyToScreen(node1.x,node1.y)
-	local sx2,sy2 = xyToScreen(node2.x,node2.y)
-	local tx,ty = sx2-sx1,sy2-sy1
-	local length = pyth(tx,ty)
-	tx,ty = tx/length,ty/length
-	local nx,ny = ty,-tx
-	local newLine = {
-		n1 = node1,
-		n2 = node2,
-		cursor = false,
-		tx = tx, ty = ty,
-		nx = nx, ny = ny,
-		length = length,
-		x1 = sx1, y1 = sy1, x2 = sx2, y2 = sy2,
-  }	
-	table.insert(lines,newLine)
-	detectCrossings()	
-end
-
-function countLines()
-	for i,v in ipairs(level) do
-		v.count = 0
-	end
-	for i,v in ipairs(lines) do
-		v.n1.count = v.n1.count+1
-		v.n2.count = v.n2.count+1
-	end
-end
-
-function detectCrossings()
-	for i=1,#lines do
-		lines[i].crossed = false
-	end
-	for i = 1,#lines do
-		for j = i+1,#lines do
-			local l1 = lines[i]
-			local l2 = lines[j]
-			-- check if endpoints of line 2 are on different sides of line 1
-			local dx1,dy1 = l2.x1 - l1.x1, l2.y1 - l1.y1
-			local dx2,dy2 = l2.x2 - l1.x1, l2.y2 - l1.y1
-			local orth1 = dx1 * l1.nx + dy1 * l1.ny
-			local orth2 = dx2 * l1.nx + dy2 * l1.ny
-			local prod1 = orth1*orth2
-			-- this is unoptimized
-			dx1,dy1 = l1.x1 - l2.x1, l1.y1 - l2.y1
-			dx2,dy2 = l1.x2 - l2.x1, l1.y2 - l2.y1
-			orth1 = dx1 * l2.nx + dy1 * l2.ny
-			orth2 = dx2 * l2.nx + dy2 * l2.ny
-			local prod2 = orth1*orth2
-
-			if prod1 <= 0 and prod2 <= 0 then
-				if not (prod1 == 0 and prod2 == 0) then
-					l1.crossed = true
-					l2.crossed = true				
-				end
-			end
-		end
-	end
-end
-
-function removeLine(line)
-	for i,v in ipairs(lines) do
-		if v == line then
-			table.remove(lines,i)
-			countLines()
-			detectCrossings()
-			break
-		end
 	end
 end
 
