@@ -2,6 +2,7 @@
 
 Functions:
 
+insertNode
 insertLine
 removeLine
 checkEverything
@@ -10,6 +11,10 @@ checkAngles
 detectCrossings
 
 --]]
+function insertNode(x,y,shape)
+	local newNode = {x=x,y=y,shape=shape,cursor=false,lines={},angle=0, targetAngle=0}
+	table.insert(nodes,newNode)
+end
 
 function insertLine(node1,node2)
 	local sx1,sy1 = xyToScreen(node1.x,node1.y)
@@ -45,6 +50,7 @@ function checkEverything()
 	countLines()
 	checkAngles()
 	detectCrossings()
+	assignAngles()
 end
 
 function countLines()
@@ -120,6 +126,18 @@ function detectCrossings()
 					l2.crossed = true				
 				end
 			end
+		end
+	end
+end
+
+function assignAngles()
+	for i,v in ipairs(nodes) do
+		if #v.lines > 0 then
+			local tx,ty = v.lines[1].nx, v.lines[1].ny
+			v.targetAngle = math.atan2(ty,tx)
+			
+		else
+			v.targetAngle = 0
 		end
 	end
 end

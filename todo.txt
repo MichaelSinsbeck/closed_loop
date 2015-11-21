@@ -1,0 +1,8 @@
+Todos:
+
+- Winkel sauber implementieren (toleranz ist so hoch)
+- Beliebige Gittergröße (3 Zahlen)
+- Sonderfall bei Schnitten: Parallele Linien
+- Sind alle Knoten mit allen Verbunden?
+- Menu, Levelwahl
+- Rotation der Knoten schlauer lösen

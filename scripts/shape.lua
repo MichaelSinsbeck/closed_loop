@@ -19,13 +19,23 @@ function initShapes()
 		outline[1][2*i+2] = -math.cos(i*math.pi*2/nSeg) * factor
 	end
 	
+	-- hexagon
+	outline[2] = {}
+	local nSeg = 6
+	local factor = 0.9
+	for i=0,nSeg-1 do
+		outline[2][2*i+1] = math.sin(i*math.pi*2/nSeg) * factor
+		outline[2][2*i+2] = -math.cos(i*math.pi*2/nSeg) * factor
+	end	
+	
+
+	-- diamond
+	outline[3] = {0.9,0,0,0.9,-0.9,0,0,-0.9}
 	
 	-- triangle
-	outline[2] = {0,-.8,-0.8,0.8,0.8,0.8}
--- rectangle
-	outline[3] = {-.8,-.8,-.8,.8,.8,.8,.8,-.8}
+	outline[4] = {0,-.8,-0.8,0.8,0.8,0.8}
 
-	-- star
+	--[[-- star
 	outline[4] = {}
 	for i=0,4 do
 		local factor = 0.9
@@ -36,8 +46,9 @@ function initShapes()
 		outline[4][4*i+4] = ratio*-math.cos((i+0.5)*math.pi*2/5)		 * factor
 	end
 
-	-- diamond
-	outline[5] = {0.9,0,0,0.9,-0.9,0,0,-0.9}
+	-- rectangle
+	outline[5] = {-.8,-.8,-.8,.8,.8,.8,.8,-.8}
+
 	-- cross
 	outline[6] = {0.9,0.6,0.6,0.9,0,0.3
 							,-0.6,0.9,-0.9,0.6,-0.3,0
@@ -89,7 +100,7 @@ function initShapes()
 		local angle = i*2*math.pi/3/nSeg + math.pi*5/6
 		table.insert(outline[8],cx + r*math.cos(angle))
 		table.insert(outline[8],cy -r*math.sin(angle))
-	end
+	end--]]
 	
 	insides = {}
 	for i=1,#outline do
@@ -101,7 +112,7 @@ function initShapes()
 	end
 end
 
-function drawShape(x,y,colorName,shapeIdx)
+function drawShape(x,y,colorName,shapeIdx,angle)
 	local thisScale = scale or 0.4
 	thisScale = thisScale * 50
 	local lineWidth = 5
@@ -112,6 +123,7 @@ function drawShape(x,y,colorName,shapeIdx)
 	love.graphics.push()
 	love.graphics.translate(x,y)
 	love.graphics.scale(thisScale,thisScale)	
+	love.graphics.rotate(angle)
 	love.graphics.setLineWidth(0.2)
 	
 	-- inside, half mixed with white
