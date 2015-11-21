@@ -15,6 +15,7 @@ indent_mode=2
 [project]
 name=Closed Loop
 base_path=/home/micha/Programmieren/love/closed_loop
+description=
 
 [long line marker]
 long_line_behaviour=1
@@ -22,12 +23,14 @@ long_line_column=72
 
 [files]
 current_page=5
-FILE_NAME_0=519;Lua;0;EUTF-8;1;1;0;%2Fhome%2Fmicha%2FProgrammieren%2Flove%2Fclosed_loop%2Fmain.lua;0;2
+FILE_NAME_0=600;Lua;0;EUTF-8;1;1;0;%2Fhome%2Fmicha%2FProgrammieren%2Flove%2Fclosed_loop%2Fmain.lua;0;2
 FILE_NAME_1=0;Lua;0;EUTF-8;1;1;0;%2Fhome%2Fmicha%2FProgrammieren%2Flove%2Fclosed_loop%2Fscripts%2Fcolors.lua;0;2
-FILE_NAME_2=2838;Lua;0;EUTF-8;1;1;0;%2Fhome%2Fmicha%2FProgrammieren%2Flove%2Fclosed_loop%2Fscripts%2Fshape.lua;0;2
-FILE_NAME_3=232;Lua;0;EUTF-8;1;1;0;%2Fhome%2Fmicha%2FProgrammieren%2Flove%2Fclosed_loop%2Fscripts%2Flogic.lua;0;2
+FILE_NAME_2=608;Lua;0;EUTF-8;1;1;0;%2Fhome%2Fmicha%2FProgrammieren%2Flove%2Fclosed_loop%2Fscripts%2Fshape.lua;0;2
+FILE_NAME_3=3011;Lua;0;EUTF-8;1;1;0;%2Fhome%2Fmicha%2FProgrammieren%2Flove%2Fclosed_loop%2Fscripts%2Flogic.lua;0;2
 FILE_NAME_4=40;Lua;0;EUTF-8;1;1;0;%2Fhome%2Fmicha%2FProgrammieren%2Flove%2Fclosed_loop%2Fscripts%2Futility.lua;0;2
-FILE_NAME_5=201;None;0;EUTF-8;1;1;0;%2Fhome%2Fmicha%2FProgrammieren%2Flove%2Fclosed_loop%2Ftodo.txt;0;2
+FILE_NAME_5=239;None;0;EUTF-8;1;1;0;%2Fhome%2Fmicha%2FProgrammieren%2Flove%2Fclosed_loop%2Ftodo.txt;0;2
+FILE_NAME_6=15;Lua;0;EUTF-8;1;1;0;%2Fhome%2Fmicha%2FProgrammieren%2Flove%2Fclosed_loop%2Fscripts%2Fmenu.lua;0;2
+FILE_NAME_7=2531;Lua;0;EUTF-8;1;1;0;%2Fhome%2Fmicha%2FProgrammieren%2Flove%2Fclosed_loop%2Fscripts%2Fgame.lua;0;2
 
 [VTE]
 last_dir=/home/micha/Programmieren/love/closed_loop

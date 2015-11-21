@@ -97,16 +97,31 @@ local function drawNodes()
 	end
 end
 
+function drawText()
+	love.graphics.setColor(colors.gray)
+	if levelName then
+		love.graphics.setFont(largeFont)
+		love.graphics.printf(levelName,0,30,2*cx,'center')
+	end
+	
+	love.graphics.setColor(colors.blue)
+	if levelText then
+		love.graphics.setFont(smallFont)
+		love.graphics.printf(levelText,0,2*cy - 60,2*cx, 'center')
+	end
+
+end
+
 function game.draw()
 
 	drawGrid()
 	drawLines()
 	drawNodes()
-	
+	drawText()
 	if levelWon then
-		love.graphics.print('Won',10,10)
+		--love.graphics.print('Won',10,10)
 	else
-		love.graphics.print('Not Won',10,10)
+		--love.graphics.print('Not Won',10,10)
 	end
 end
 
@@ -128,4 +143,38 @@ function game.update(dt)
 	end
 end
 
+function game.mousepressed(x,y,key)
+	if key == 'l' then
+		if not drawingLine then
+		-- not line in action
+			if activeNode then
+				drawingLine = true
+				startNode = activeNode
+			end
+		else
+		-- line in action
+			if activeNode and activeNode ~= startNode then
+				insertLine(startNode,activeNode)
+				countLines()
+				if activeNode.count == 1 then
+					startNode = activeNode  -- continue drawing a line
+				else
+					drawingLine = false
+					startNode = nil
+				end
+			end
+		end
+	end
+	if key == 'r' then
+		if drawingLine then
+			drawingLine = false
+			startNode = nil
+		elseif activeLine then
+			removeLine(activeLine)
+		end
+	end
+end
+
+function game.keypressed(key)
+end
 return game

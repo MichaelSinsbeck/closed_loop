@@ -1,3 +1,7 @@
+local color
+local outline
+local insides
+
 function initShapes()
 	color = {
 		{170,0,0},
@@ -13,7 +17,7 @@ function initShapes()
 	-- circle
 	outline[1] = {}
 	local nSeg = 40
-	local factor = 0.9
+	local factor = 0.75
 	for i=0,nSeg-1 do
 		outline[1][2*i+1] = math.sin(i*math.pi*2/nSeg) * factor
 		outline[1][2*i+2] = -math.cos(i*math.pi*2/nSeg) * factor

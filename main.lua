@@ -2,11 +2,23 @@ require 'scripts/shape'
 require 'scripts/logic'
 require 'scripts/utility'
 colors = require 'scripts/colors'
-menu = require 'scripts/menu'
-game = require 'scripts/game'
+campaign = require 'scripts/campaign'
 
 function love.load()
-	gameState = 'game'
+	-- load game states
+	states = {
+		menu = require 'scripts/menu',
+		game = require 'scripts/game',
+		editor = require 'scripts/editor',
+		levelselect = require 'scripts/levelselect',
+		winscreen = require 'scripts/winscreen',
+	}
+	campaign.loadLevels()
+	
+	largeFont = love.graphics.newFont('font/CaviarDreams.ttf',50)	
+	smallFont = love.graphics.newFont('font/Caviar_Dreams_Bold.ttf',20)
+	tinyFont = love.graphics.newFont('font/Caviar_Dreams_Bold.ttf',11)
+	
 	size = 3
 	gridSize = 70
 	tol = 1e-2 -- tolerance for angle check
@@ -47,62 +59,45 @@ function love.load()
 	lines = {}
 	drawingLine = false
 	countLines()
+
+	gotoState('menu')
 end
 
+function gotoState(newState)
+	gameState = newState
+	if states[gameState].init then
+		states[gameState].init()
+	end
+end
 
 function love.update(dt)
-	if gameState == 'menu' then
-		menu.update(dt)
-	elseif gameState == 'game' then
-		game.update(dt)
+	if states[gameState] then
+		states[gameState].update(dt)
 	end
 end
 
 function love.draw()
-	if gameState == 'menu' then
-		menu.draw()
-	elseif gameState == 'game' then
-		game.draw()
+	if states[gameState] then
+		states[gameState].draw()
 	end
-	
 end
 
-
-function love.keypressed( key, repeated )
+function love.keypressed( key)
+	if states[gameState] then
+		states[gameState].keypressed(key)
+	end 
+	if key == 'f1' then
+		for k,v in pairs(_G) do
+			print(k)
+		end
+	end
 	if key == 'escape' then
 		love.event.quit()
 	end
 end
 
 function love.mousepressed(x,y,key)
-	if key == 'l' then
-		if not drawingLine then
-		-- not line in action
-			if activeNode then
-				drawingLine = true
-				startNode = activeNode
-			end
-		else
-		-- line in action
-			if activeNode and activeNode ~= startNode then
-				insertLine(startNode,activeNode)
-				countLines()
-				if activeNode.count == 1 then
-					startNode = activeNode  -- continue drawing a line
-				else
-					drawingLine = false
-					startNode = nil
-				end
-			end
-
-		end
-	end
-	if key == 'r' then
-		if drawingLine then
-			drawingLine = false
-			startNode = nil
-		elseif activeLine then
-			removeLine(activeLine)
-		end
+	if states[gameState] then
+		states[gameState].mousepressed(x,y,key)
 	end
 end

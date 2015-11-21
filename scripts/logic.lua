@@ -11,6 +11,12 @@ checkAngles
 detectCrossings
 
 --]]
+
+function clearLevel()
+	nodes = {}
+	lines = {}
+end
+
 function insertNode(x,y,shape)
 	local newNode = {x=x,y=y,shape=shape,cursor=false,lines={},angle=0, targetAngle=0}
 	table.insert(nodes,newNode)
