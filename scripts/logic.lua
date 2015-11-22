@@ -17,8 +17,9 @@ function clearLevel()
 	lines = {}
 end
 
-function insertNode(x,y,shape)
-	local newNode = {x=x,y=y,shape=shape,cursor=false,lines={},angle=0, targetAngle=0,neighbors={}}
+function insertNode(x,y,shape,connections)
+	connections = connections or 2
+	local newNode = {x=x,y=y,shape=shape,connections = connections,cursor=false,lines={},angle=0, targetAngle=0,neighbors={}}
 	table.insert(nodes,newNode)
 	
 	local sx1,sy1 = xyToScreen(x,y)

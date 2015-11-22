@@ -17,9 +17,13 @@ function love.load()
 	campaign.loadLevels()
 	lastLevel = 100
 	
-	largeFont = love.graphics.newFont('font/CaviarDreams.ttf',50)	
+	--[[largeFont = love.graphics.newFont('font/CaviarDreams.ttf',50)	
 	smallFont = love.graphics.newFont('font/Caviar_Dreams_Bold.ttf',20)
-	tinyFont = love.graphics.newFont('font/Caviar_Dreams_Bold.ttf',11)
+	tinyFont = love.graphics.newFont('font/Caviar_Dreams_Bold.ttf',14)--]]
+	
+	largeFont = love.graphics.newFont('font/MEgalopolisExtra.otf',50)	
+	smallFont = love.graphics.newFont('font/MEgalopolisExtra.otf',20)
+	tinyFont = love.graphics.newFont('font/MEgalopolisExtra.otf',14)
 	
 	size = 3
 	gridSize = 70

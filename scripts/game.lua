@@ -153,6 +153,10 @@ local function drawNodes()
 			thisColor = 'gray'
 		end
 		drawShape(sx,sy,thisColor,v.shape,v.angle)
+		-- draw number of connections on top
+		love.graphics.setFont(tinyFont)
+		love.graphics.setColor(colors.gray)
+		love.graphics.printf(v.connections,sx-20,sy-8,40,'center')
 	end
 end
 
@@ -191,7 +195,7 @@ function game.init()
 	end
 	
 	
-	local nextText = 'Goto Next Level'
+	local nextText = 'Next Level'
 	if editorActive then nextText = 'Back to Editor' end
 	
 	yTitle = 30
