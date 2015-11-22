@@ -6,6 +6,17 @@ local fadeTime = 0.3
 local yTitle
 local yText
 local yCongrats
+local previousNode
+local lineTimer = 0
+local lineTime = 0.2
+
+local function admissibleAngle(x1,y1,x2,y2)
+	local dx,dy = x2-x1,y2-y1
+	local thisAngle = math.atan2(dy,dx)
+	local divisor = math.pi/6
+	local roundedAngle = math.floor((thisAngle/divisor)+0.5)*divisor
+	return math.abs(thisAngle-roundedAngle) < tol
+end
 
 local function nearestLine(mx,my)
 -- detect closest line (only if not drawing a line
@@ -32,16 +43,25 @@ end
 
 local function nearestNode(mx,my)
 	-- detect closest node
+	previousNode = activeNode
 	activeNode = nil
 	local distance = 25
 
 	for i,v in ipairs(nodes) do
 		v.cursor = false
-		sx,sy = xyToScreen(v.x,v.y)
+		local sx,sy = xyToScreen(v.x,v.y)
 		local thisDistance = pyth(mx-sx,my-sy)
 		if thisDistance < distance then
-			distance = thisDistance
-			activeNode = v
+			if drawingLine then
+				local rx,ry = xyToScreen(startNode.x,startNode.y)
+				if admissibleAngle(sx,sy,rx,ry) then
+					distance = thisDistance
+					activeNode = v
+				end
+			else
+				distance = thisDistance
+				activeNode = v
+			end
 		end
 	end
 end
@@ -66,6 +86,9 @@ local function drawLines()
 		local sx1,sy1 = xyToScreen(activeNode.x,activeNode.y)
 		for i,n in ipairs(activeNode.neighbors) do
 			local sx2,sy2 = xyToScreen(n.x,n.y)
+			local factor = tween(lineTimer/lineTime)
+			sx2 = sx1 + (sx2-sx1) * factor
+			sy2 = sy1 + (sy2-sy1) * factor
 			love.graphics.setLineWidth(2)
 			love.graphics.setColor(colors.node)			
 			love.graphics.line(sx1,sy1,sx2,sy2)
@@ -74,6 +97,9 @@ local function drawLines()
 		local sx1,sy1 = xyToScreen(startNode.x,startNode.y)
 		for i,n in ipairs(startNode.neighbors) do
 			local sx2,sy2 = xyToScreen(n.x,n.y)
+			local factor = tween(lineTimer/lineTime)
+			sx2 = sx1 + (sx2-sx1) * factor
+			sy2 = sy1 + (sy2-sy1) * factor			
 			love.graphics.setLineWidth(2)
 			love.graphics.setColor(colors.node)			
 			love.graphics.line(sx1,sy1,sx2,sy2)
@@ -85,13 +111,15 @@ local function drawLines()
 		love.graphics.setColor(colors.helpline)
 		local mx,my = love.mouse.getPosition()
 		local sx,sy = xyToScreen(startNode.x,startNode.y)
+		love.graphics.line(sx,sy,mx,my)
+		--[[ Force the angle (unintuitive)
 		local angle = math.atan2(my-sy,mx-sx)
 		local divisor = math.pi/6
 		local newAngle = math.floor((angle/divisor)+0.5)*divisor
 		local distance = pyth(mx-sx,my-sy)
 		local lx = sx + math.cos(newAngle) * distance * math.cos(angle-newAngle)
 		local ly = sy + math.sin(newAngle) * distance * math.cos(angle-newAngle)
-		love.graphics.line(sx,sy,lx,ly)
+		love.graphics.line(sx,sy,lx,ly)--]]
 	end
 	-- draw lines (set)
 	for i,v in ipairs(lines) do
@@ -151,6 +179,7 @@ end
 function game.init()
 	levelWon = false
 	winTimer = 0
+	lineTimer = 0
 	-- check all angles and stuff and create buttons
 	checkEverything()
 	local nextfunc = function()
@@ -189,7 +218,7 @@ function game.draw()
 end
 
 function game.update(dt)
-
+	lineTimer = lineTimer + dt
 	
 	-- rotate all the nodes
 	for i,v in ipairs(nodes) do
@@ -200,6 +229,9 @@ function game.update(dt)
 	local mx,my = love.mouse.getPosition()
 	nearestLine(mx,my)
 	nearestNode(mx,my)
+	if activeNode and activeNode ~= previousNode then
+		lineTimer = 0
+	end
 	if activeNode then
 		activeNode.cursor = true
 		activeLine = nil
@@ -240,13 +272,17 @@ function game.mousepressed(x,y,key)
 		else
 		-- line in action
 			if activeNode and activeNode ~= startNode then
-				insertLine(startNode,activeNode)
-				countLines()
-				if activeNode.count == 1 then
-					startNode = activeNode  -- continue drawing a line
-				else
-					drawingLine = false
-					startNode = nil
+				local sx1,sy1 = xyToScreen(activeNode.x,activeNode.y)
+				local sx2,sy2 = xyToScreen(startNode.x,startNode.y)
+				if admissibleAngle(sx1,sy1,sx2,sy2) then
+					insertLine(startNode,activeNode)
+					countLines()
+					if activeNode.count == 1 then
+						startNode = activeNode  -- continue drawing a line
+					else
+						drawingLine = false
+						startNode = nil
+					end
 				end
 			end
 		end
