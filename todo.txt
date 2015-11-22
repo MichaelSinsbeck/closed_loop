@@ -6,3 +6,4 @@ Todos:
 - Sind alle Knoten mit allen Verbunden?
 - Menu, Levelwahl
 - Rotation der Knoten schlauer lösen
+- Buttons im Menü erst beim Loslassen auslösen

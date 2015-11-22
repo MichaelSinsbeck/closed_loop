@@ -1,6 +1,7 @@
 local menu = {}
 local buttons = {}
 local activeButton
+local downButton
 
 local function addbutton(name,func)
 	local w = 200
@@ -19,7 +20,9 @@ end
 
 function drawButtons()
 	for i,b in ipairs(buttons) do
-		if b.highlight then
+		if b.down then
+			love.graphics.setColor(colors.orange)
+		elseif b.highlight and not downButton then
 			love.graphics.setColor(colors.yellow)
 		else
 			love.graphics.setColor(colors.node)
@@ -34,13 +37,13 @@ end
 
 function menu.init()
 	local emptyfunc = function()
-		print('hallo')
+		--print('hallo')
 	end
 	addbutton('Start Game',function() gotoState('game') end)
 	addbutton('Editor',emptyfunc)
 	addbutton('Toggle Fullscreen',emptyfunc)
 	addbutton('Sound is on',emptyfunc)
-	addbutton('Quit',emptyfunc)
+	addbutton('Quit',function() love.event.quit() end)
 end
 
 function menu.update(dt)
@@ -49,12 +52,17 @@ function menu.update(dt)
 	activeButton = nil
 	for i,b in ipairs(buttons) do
 		b.highlight = false
+		b.down = false
 		if mx >= b.x and my > b.y and mx <= b.x+b.w and  my <= b.y+b.h then
 		  activeButton = b
 		end
 	end
 	if activeButton then
-		activeButton.highlight = true
+		if activeButton == downButton then
+			activeButton.down = true
+		else
+			activeButton.highlight = true
+		end
 	end
 end
 
@@ -64,7 +72,10 @@ end
 
 function menu.mousepressed()
 	if activeButton then
-		activeButton.func()
+		downButton = activeButton
+		--activeButton.func()
+	else
+		downButton = nil
 	end
 end
 
@@ -72,6 +83,13 @@ function menu.keypressed(key)
 	if key == 'return' then
 		campaign.startLevel(1)
 	end
+end
+
+function menu.mousereleased(x,y,key)
+	if activeButton and activeButton == downButton then
+		activeButton.func()
+	end
+	downButton = nil
 end
 
 return menu

@@ -71,19 +71,19 @@ function gotoState(newState)
 end
 
 function love.update(dt)
-	if states[gameState] then
+	if states[gameState].update then
 		states[gameState].update(dt)
 	end
 end
 
 function love.draw()
-	if states[gameState] then
+	if states[gameState].draw then
 		states[gameState].draw()
 	end
 end
 
 function love.keypressed( key)
-	if states[gameState] then
+	if states[gameState].keypressed then
 		states[gameState].keypressed(key)
 	end 
 	if key == 'f1' then
@@ -97,7 +97,13 @@ function love.keypressed( key)
 end
 
 function love.mousepressed(x,y,key)
-	if states[gameState] then
+	if states[gameState].mousepressed then
 		states[gameState].mousepressed(x,y,key)
+	end
+end
+
+function love.mousereleased(x,y,key)
+	if states[gameState].mousereleased then
+		states[gameState].mousereleased(x,y,key)
 	end
 end
