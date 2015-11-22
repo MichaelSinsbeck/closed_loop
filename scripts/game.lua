@@ -70,9 +70,7 @@ local function drawLines()
 			love.graphics.setColor(colors.node)			
 			love.graphics.line(sx1,sy1,sx2,sy2)
 		end
-	end
-	
-	if startNode then
+	elseif startNode then
 		local sx1,sy1 = xyToScreen(startNode.x,startNode.y)
 		for i,n in ipairs(startNode.neighbors) do
 			local sx2,sy2 = xyToScreen(n.x,n.y)
