@@ -56,7 +56,43 @@ function campaign.startLevel(num)
 end
 
 function campaign.loadLevels()
-	newChapter('Tutorial')
+	newChapter('Introduction')
+	
+	newLevel('Hello')
+	addText('Click the nodes to form a closed circuit')
+	addNode(-2,-1,1)
+	addNode(1,-1,1)
+	addNode(1,2,1)
+
+	newLevel('Intersection')
+	addText('Line segments may not cross')
+	addNode(-3,-2,1)
+	addNode(-3,-1,1)
+	addNode(-2,-3,1)
+	addNode(-2,1,1)
+	addNode(-1,-3,1)
+	addNode(-1,2,1)
+	addNode(1,-2,1)
+	addNode(1,3,1)
+	addNode(2,-1,1)
+	addNode(2,3,1)
+	addNode(3,1,1)
+	addNode(3,2,1)
+	
+	newLevel('Around the clock')
+	addText('Lines can only go in certain directions')
+	addNode(-3,-2,1)
+	addNode(-3,-1,1)
+	addNode(0,0,1)
+	addNode(0,2,1)
+	addNode(1,-2,1)
+	addNode(2,2,1)
+	addNode(3,2,1)
+	
+	-- Be careful not to form two separate circuits
+	-- By the way, each puzzle has only one unique solution.
+
+	
 	newLevel('Hello world')
 	addText('Connect all nodes to form a closed circle')
 	addNode(0,0,3)

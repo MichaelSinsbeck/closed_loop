@@ -65,9 +65,15 @@ local function drawLines()
 	if drawingLine then
 		love.graphics.setLineWidth(4)
 		love.graphics.setColor(colors.helpline)
-		mx,my = love.mouse.getPosition()
-		sx,sy = xyToScreen(startNode.x,startNode.y)
-		love.graphics.line(mx,my,sx,sy)
+		local mx,my = love.mouse.getPosition()
+		local sx,sy = xyToScreen(startNode.x,startNode.y)
+		local angle = math.atan2(my-sy,mx-sx)
+		local divisor = math.pi/6
+		local newAngle = math.floor((angle/divisor)+0.5)*divisor
+		local distance = pyth(mx-sx,my-sy)
+		local lx = sx + math.cos(newAngle) * distance * math.cos(angle-newAngle)
+		local ly = sy + math.sin(newAngle) * distance * math.cos(angle-newAngle)
+		love.graphics.line(sx,sy,lx,ly)
 	end
 	-- draw lines (set)
 	for i,v in ipairs(lines) do

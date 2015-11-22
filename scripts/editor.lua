@@ -87,7 +87,7 @@ function editor.keypressed(key)
 			activePoint.node = nil
 		end
 	end
-	if key == 'f1' then
+	if key == 'o' then
 		outputLevel()
 	end
 	
