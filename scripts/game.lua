@@ -1,4 +1,11 @@
 local game = {}
+local nextButton
+local backButton
+local winTimer
+local fadeTime = 0.3
+local yTitle
+local yText
+local yCongrats
 
 local function nearestLine(mx,my)
 -- detect closest line (only if not drawing a line
@@ -101,15 +108,37 @@ function drawText()
 	love.graphics.setColor(colors.gray)
 	if levelName then
 		love.graphics.setFont(largeFont)
-		love.graphics.printf(levelName,0,30,2*cx,'center')
+		love.graphics.printf(levelName,0,yTitle,2*cx,'center')
+	end
+	
+	love.graphics.setColor(colors.gray)
+	if levelName then
+		love.graphics.setFont(largeFont)
+		love.graphics.printf('Puzzle solved!',0,yCongrats,2*cx,'center')
 	end
 	
 	love.graphics.setColor(colors.blue)
 	if levelText then
 		love.graphics.setFont(smallFont)
-		love.graphics.printf(levelText,0,2*cy - 60,2*cx, 'center')
+		love.graphics.printf(levelText,0,yText,2*cx, 'center')
 	end
+end
 
+function game.init()
+	levelWon = false
+	winTimer = 0
+	-- check all angles and stuff and create buttons
+	checkEverything()
+	local nextfunc = function()
+		campaign.startLevel(levelNumber + 1)
+	end
+	
+	yTitle = 30
+	yText = 2*cy - 60
+	yCongrats = 2*cy + 50
+	buttonTree.clear()
+	nextButton = buttonTree.addButton(900,500,200,30,'Goto Next Level',nextfunc)
+	backButton = buttonTree.addButton(-300,500,200,30,'Back to Menu',function() gotoState('levelselect') end)
 end
 
 function game.draw()
@@ -118,6 +147,8 @@ function game.draw()
 	drawLines()
 	drawNodes()
 	drawText()
+	buttonTree.draw()
+	
 	if levelWon then
 		--love.graphics.print('Won',10,10)
 	else
@@ -126,14 +157,17 @@ function game.draw()
 end
 
 function game.update(dt)
+
+	
+	-- rotate all the nodes
 	for i,v in ipairs(nodes) do
 		v.angle = 0.5*(v.angle + v.targetAngle)
 	end
 
+	-- find nearest line or node
 	local mx,my = love.mouse.getPosition()
 	nearestLine(mx,my)
 	nearestNode(mx,my)
-	
 	if activeNode then
 		activeNode.cursor = true
 		activeLine = nil
@@ -141,9 +175,29 @@ function game.update(dt)
 	if activeLine then
 		activeLine.cursor = true
 	end
+	
+	-- fade in buttons smoothly
+	if levelWon then
+		-- winTimer
+		winTimer = winTimer + dt
+		
+		weight = tween(winTimer/fadeTime)
+		
+		nextButton.x = 550 * weight + 900 * (1-weight)
+		backButton.x = 50 * weight - 300 * (1-weight)
+		yTitle = -100 * weight + 30 * (1-weight)
+		yText = (2*cy + 50) * weight +  (2*cy - 60) * (1-weight)
+		yCongrats = (2*cy - 60) * weight + (2*cy + 50) * (1-weight)
+	end
+	
+	-- process buttons
+	buttonTree.update(dt)
+	
+	
 end
 
 function game.mousepressed(x,y,key)
+	buttonTree.mousepressed(x,y,key)
 	if key == 'l' then
 		if not drawingLine then
 		-- not line in action
@@ -173,6 +227,10 @@ function game.mousepressed(x,y,key)
 			removeLine(activeLine)
 		end
 	end
+end
+
+function game.mousereleased(x,y,key)
+	buttonTree.mousereleased(x,y,key)
 end
 
 function game.keypressed(key)

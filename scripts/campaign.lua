@@ -48,7 +48,7 @@ function campaign.startLevel(num)
 		end
 		levelName = level.name
 		levelText = level.text
-		checkEverything()
+		levelNumber = num
 		gotoState('game')
 	else
 		print('Error: Level '.. num .. ' does not exist')
@@ -63,6 +63,12 @@ function campaign.loadLevels()
 	addNode(1,0,2)
 	addNode(1,2,1)
 	newLevel('2')
+	addText('Information text is displayed at the bottom')
+	addNode(0,0,3)
+	addNode(1,0,2)
+	addNode(1,2,1)
+	newLevel('3')
+	newChapter('Angles')
 	newLevel('3')
 	newChapter('Inside and outside')
 	newLevel('Vier')

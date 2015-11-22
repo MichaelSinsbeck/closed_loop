@@ -117,7 +117,7 @@ function initShapes()
 end
 
 function drawShape(x,y,colorName,shapeIdx,angle)
-	local thisScale = scale or 0.4
+	local thisScale = scale or 0.3
 	thisScale = thisScale * 50
 	local lineWidth = 5
 	local r = colors[colorName][1]

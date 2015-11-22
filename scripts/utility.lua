@@ -5,6 +5,7 @@ Functions:
 yBound
 pyth
 xyToScreen
+tween
 --]]
 function yBound(x,size)
 	local lb = -size
@@ -20,5 +21,11 @@ end
 
 function xyToScreen(x,y)
 	return x*x1+y*y1+cx, x*x2+y*y2+cy
+end
+
+function tween(t)
+	if t < 0 then return 0 end
+	if t > 1 then return 1 end
+	return 1-(t-1)^2
 end
 

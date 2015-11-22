@@ -15,10 +15,12 @@ end
 function levelselect.init()
 	buttonTree.clear()
 	for i,l in ipairs(campaign.levels) do
+		local locked = false
+		if i > lastLevel then locked = true end
 		local thisName = '' .. l.number
 		local x = l.number * 50 + 50
 		local y = l.chapter * 100 + 100
-		buttonTree.addButton(x,y,40,40,thisName,function() campaign.startLevel(i) end)
+		buttonTree.addButton(x,y,40,40,thisName,function() campaign.startLevel(i) end,locked)
 	end
 end
 

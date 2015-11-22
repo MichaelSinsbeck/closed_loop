@@ -15,6 +15,7 @@ function love.load()
 		winscreen = require 'scripts/winscreen',
 	}
 	campaign.loadLevels()
+	lastLevel = 3
 	
 	largeFont = love.graphics.newFont('font/CaviarDreams.ttf',50)	
 	smallFont = love.graphics.newFont('font/Caviar_Dreams_Bold.ttf',20)

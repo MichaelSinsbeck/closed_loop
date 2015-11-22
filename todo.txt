@@ -4,6 +4,7 @@ Todos:
 - Beliebige Gittergröße (3 Zahlen)
 - Sonderfall bei Schnitten: Parallele Linien
 - Sind alle Knoten mit allen Verbunden?
-- Menu, Levelwahl
 - Rotation der Knoten schlauer lösen
-- Buttons im Menü erst beim Loslassen auslösen
+- Implement locked buttons (unlock new levels)
+- Winning a level and next level
+- Make animations independent of computer speed (use dt)
