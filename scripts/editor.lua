@@ -23,6 +23,9 @@ function editor.draw()
 		if p.node then
 			-- draw node
 			 drawShape(p.sx,p.sy,'gray',p.node)
+			love.graphics.setFont(tinyFont)
+			love.graphics.setColor(colors.gray)
+			love.graphics.printf(p.connections,p.sx-20,p.sy-8,40,'center')			 
 		else
 			-- draw grid point otherwise
 			love.graphics.setColor(colors.node)
@@ -79,12 +82,16 @@ function editor.keypressed(key)
 	if activePoint then
 		if key == '1' then
 			activePoint.node = 1
+			activePoint.connections = 2
 		elseif key == '2' then
 			activePoint.node = 2
+			activePoint.connections = 2
 		elseif key == '3' then
 			activePoint.node = 3
+			activePoint.connections = 2
 		elseif key == ' ' then
 			activePoint.node = nil
+			activePoint.connections = nil
 		end
 	end
 	if key == 'o' then
@@ -95,7 +102,7 @@ function editor.keypressed(key)
 		clearLevel()
 		for i,p in ipairs(gridPoints) do
 			if p.node then
-				insertNode(p.x,p.y,p.node)
+				insertNode(p.x,p.y,p.node,p.connections)
 			end
 		end
 		gotoState('game')
@@ -107,7 +114,13 @@ function editor.keypressed(key)
 	end
 end
 
-function editor.mousepressed()
+function editor.mousepressed(x,y,key)
+	if key == 'wu' and activePoint.connections then
+		activePoint.connections = math.min(activePoint.connections + 1,12)
+	end
+	if key == 'wd' and activePoint.connections then
+		activePoint.connections = math.max(activePoint.connections - 1,1)
+	end
 end
 
 return editor

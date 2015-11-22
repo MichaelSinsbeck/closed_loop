@@ -281,9 +281,13 @@ function game.mousepressed(x,y,key)
 				if admissibleAngle(sx1,sy1,sx2,sy2) then
 					insertLine(startNode,activeNode)
 					countLines()
-					if activeNode.count == 1 then
+					if love.keyboard.isDown('rctrl','lctrl') then
 						startNode = activeNode  -- continue drawing a line
 					else
+						drawingLine = false
+						startNode = nil
+					end
+					if levelWon then
 						drawingLine = false
 						startNode = nil
 					end

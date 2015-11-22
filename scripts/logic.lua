@@ -92,7 +92,7 @@ end
 function checkAngles()
 	for i,v in ipairs(nodes) do
 		v.ok = false
-		if v.count == 2 then
+		if v.count == v.connections then
 			if v.shape == 1 then
 				v.ok = true
 			elseif v.shape == 2 then
