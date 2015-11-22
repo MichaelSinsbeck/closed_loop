@@ -176,5 +176,8 @@ function game.mousepressed(x,y,key)
 end
 
 function game.keypressed(key)
+	if key == 'escape' then
+		gotoState('levelselect')
+	end
 end
 return game

@@ -3,6 +3,7 @@ require 'scripts/logic'
 require 'scripts/utility'
 colors = require 'scripts/colors'
 campaign = require 'scripts/campaign'
+buttonTree = require 'scripts/buttonTree'
 
 function love.load()
 	-- load game states
@@ -90,9 +91,6 @@ function love.keypressed( key)
 		for k,v in pairs(_G) do
 			print(k)
 		end
-	end
-	if key == 'escape' then
-		love.event.quit()
 	end
 end
 
