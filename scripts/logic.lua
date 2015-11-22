@@ -18,8 +18,23 @@ function clearLevel()
 end
 
 function insertNode(x,y,shape)
-	local newNode = {x=x,y=y,shape=shape,cursor=false,lines={},angle=0, targetAngle=0}
+	local newNode = {x=x,y=y,shape=shape,cursor=false,lines={},angle=0, targetAngle=0,neighbors={}}
 	table.insert(nodes,newNode)
+	
+	local sx1,sy1 = xyToScreen(x,y)
+	-- create list of neighbors for new node
+	for i = 1,#nodes-1 do
+		local n = nodes[i]
+		local sx2,sy2 = xyToScreen(n.x,n.y)
+		local dx,dy = sx2-sx1,sy2-sy1
+		local thisAngle = math.atan2(dy,dx)
+		local divisor = math.pi/6
+		local roundedAngle = math.floor((thisAngle/divisor)+0.5)*divisor
+		if math.abs(thisAngle-roundedAngle) < tol then
+			table.insert(n.neighbors,newNode)
+			table.insert(newNode.neighbors,n)
+		end
+	end
 end
 
 function insertLine(node1,node2)

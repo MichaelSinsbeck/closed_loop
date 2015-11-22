@@ -61,6 +61,26 @@ local function drawGrid()
 end
 
 local function drawLines()
+	-- potential connections
+	if activeNode then
+		local sx1,sy1 = xyToScreen(activeNode.x,activeNode.y)
+		for i,n in ipairs(activeNode.neighbors) do
+			local sx2,sy2 = xyToScreen(n.x,n.y)
+			love.graphics.setLineWidth(2)
+			love.graphics.setColor(colors.node)			
+			love.graphics.line(sx1,sy1,sx2,sy2)
+		end
+	end
+	
+	if startNode then
+		local sx1,sy1 = xyToScreen(startNode.x,startNode.y)
+		for i,n in ipairs(startNode.neighbors) do
+			local sx2,sy2 = xyToScreen(n.x,n.y)
+			love.graphics.setLineWidth(2)
+			love.graphics.setColor(colors.node)			
+			love.graphics.line(sx1,sy1,sx2,sy2)
+		end
+	end
 	-- draw line (active)	
 	if drawingLine then
 		love.graphics.setLineWidth(4)
