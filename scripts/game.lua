@@ -130,14 +130,22 @@ function game.init()
 	-- check all angles and stuff and create buttons
 	checkEverything()
 	local nextfunc = function()
-		campaign.startLevel(levelNumber + 1)
+		if editorActive then
+			gotoState('editor')
+		else
+			campaign.startLevel(levelNumber + 1)
+		end
 	end
+	
+	
+	local nextText = 'Goto Next Level'
+	if editorActive then nextText = 'Back to Editor' end
 	
 	yTitle = 30
 	yText = 2*cy - 60
 	yCongrats = 2*cy + 50
 	buttonTree.clear()
-	nextButton = buttonTree.addButton(900,500,200,30,'Goto Next Level',nextfunc)
+	nextButton = buttonTree.addButton(900,500,200,30,nextText,nextfunc)
 	backButton = buttonTree.addButton(-300,500,200,30,'Back to Menu',function() gotoState('levelselect') end)
 end
 
@@ -235,7 +243,11 @@ end
 
 function game.keypressed(key)
 	if key == 'escape' then
-		gotoState('levelselect')
+		if editorActive then
+			gotoState('editor')
+		else
+			gotoState('levelselect')
+		end
 	end
 end
 return game

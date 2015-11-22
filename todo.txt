@@ -5,6 +5,8 @@ Todos:
 - Sonderfall bei Schnitten: Parallele Linien
 - Sind alle Knoten mit allen Verbunden?
 - Rotation der Knoten schlauer lösen
-- Implement locked buttons (unlock new levels)
+- Implement save system for progress
 - Winning a level and next level
 - Make animations independent of computer speed (use dt)
+- Flashy animation at start/end of each level
+- Beschränkung auf 12 Richtungen?

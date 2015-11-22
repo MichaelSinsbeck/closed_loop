@@ -11,7 +11,7 @@ function menu.init()
 	local h = 30
 
 	buttonTree.addButton(x,200,w,h,'Start Game',function() gotoState('levelselect') end)
-	buttonTree.addButton(x,240,w,h,'Editor',emptyfunc)
+	buttonTree.addButton(x,240,w,h,'Editor',function() gotoState('editor') end)
 	buttonTree.addButton(x,280,w,h,'Toggle Fullscreen',emptyfunc)
 	buttonTree.addButton(x,320,w,h,'Sound is on',emptyfunc)
 	buttonTree.addButton(x,360,w,h,'Quit',function() love.event.quit() end)
