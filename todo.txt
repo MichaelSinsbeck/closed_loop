@@ -12,3 +12,5 @@ Todos:
 - Beschränkung auf 12 Richtungen?
 - Berechnung der sx,sy-koordinaten beim erstellen eines knotens
 - Screenkoordinaten x und y nennen, interne Koordinaten anders
+- Redundante Linien verbieten
+- Tutorialsystem einbauen

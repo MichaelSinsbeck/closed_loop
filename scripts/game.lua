@@ -181,6 +181,7 @@ function drawText()
 end
 
 function game.init()
+	love.graphics.setBackgroundColor(colors.bg)
 	levelWon = false
 	winTimer = 0
 	lineTimer = 0

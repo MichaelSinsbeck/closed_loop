@@ -13,6 +13,7 @@ function love.load()
 		editor = require 'scripts/editor',
 		levelselect = require 'scripts/levelselect',
 		winscreen = require 'scripts/winscreen',
+		tutorial = require 'scripts/tutorial',
 	}
 	campaign.loadLevels()
 	lastLevel = 100
@@ -69,10 +70,10 @@ function love.load()
 	gotoState('menu')
 end
 
-function gotoState(newState)
+function gotoState(newState,opts)
 	gameState = newState
 	if states[gameState].init then
-		states[gameState].init()
+		states[gameState].init(opts)
 	end
 end
 

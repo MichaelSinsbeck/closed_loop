@@ -23,6 +23,11 @@ local function newChapter(name)
 	table.insert(campaign.chapters,name)
 end
 
+local function addTutorial(number)
+	local nLevels = #campaign.levels
+	campaign.levels[nLevels].tutorial = number
+end
+
 local function addNode(x,y,shape)
 	local nLevels = #campaign.levels
 	if nLevels > 0 then
@@ -49,7 +54,11 @@ function campaign.startLevel(num)
 		levelName = level.name
 		levelText = level.text
 		levelNumber = num
-		gotoState('game')
+		if level.tutorial then
+			gotoState('tutorial',level.tutorial)
+		else
+			gotoState('game')
+		end
 	else
 		print('Error: Level '.. num .. ' does not exist')
 	end
@@ -66,6 +75,7 @@ function campaign.loadLevels()
 
 	newLevel('Intersection')
 	addText('Line segments may not cross')
+	addTutorial(1)
 	addNode(-2,-1,1)
 	addNode(-1,-2,1)
 	addNode(-1,1,1)
