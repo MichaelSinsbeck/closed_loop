@@ -28,13 +28,14 @@ local function addTutorial(number)
 	campaign.levels[nLevels].tutorial = number
 end
 
-local function addNode(x,y,shape)
+local function addNode(x,y,shape,connections)
 	local nLevels = #campaign.levels
 	if nLevels > 0 then
 		local newNode = {
 			x = x,
 			y = y,
 			shape = shape,
+			connections = connections,
 		}
 		table.insert(campaign.levels[nLevels].nodes,newNode)
 	else
@@ -49,7 +50,7 @@ function campaign.startLevel(num)
 		clearLevel()
 		for i,thisNode in ipairs(level.nodes) do
 			--print('adding node: x = ' .. thisNode.x .. ', y = ' .. thisNode.y .. ', shape = ' .. thisNode.shape)
-			insertNode(thisNode.x,thisNode.y,thisNode.shape)
+			insertNode(thisNode.x,thisNode.y,thisNode.shape,thisNode.connections)
 		end
 		levelName = level.name
 		levelText = level.text
@@ -68,23 +69,28 @@ function campaign.loadLevels()
 	newChapter('Introduction')
 	
 	newLevel('Hello')
-	addText('Click the nodes to form a closed circuit')
-	addNode(-2,-1,1)
-	addNode(1,-1,1)
-	addNode(1,2,1)
-
-	newLevel('Intersection')
-	addText('Line segments may not cross')
+	--addText('Click the nodes to form a closed circuit')
 	addTutorial(1)
-	addNode(-2,-1,1)
-	addNode(-1,-2,1)
-	addNode(-1,1,1)
-	addNode(1,2,1)
-	addNode(2,1,1)
+	addNode(-2,-1,1,1)
+	addNode(0,0,1,3)
+	addNode(1,-1,1,1)
+	addNode(1,2,1,1)
+
+
+	newLevel('Directions')
+	--addText('Line segments may not cross')
+	addTutorial(2)
+	addNode(-2,-1,1,1)
+	addNode(-1,1,1,2)
+	addNode(1,-1,1,1)
+	addNode(1,2,1,2)
+	addNode(2,1,1,2)
+
 
 	
 	newLevel('On the Grid')
-	addText('Lines can only go in certain directions')
+	--addText('')
+	addTutorial(3)
 	addNode(-3,-2,1)
 	addNode(-3,-1,1)
 	addNode(0,0,1)

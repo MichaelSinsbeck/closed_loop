@@ -135,6 +135,21 @@ local function drawLines()
 		sx2,sy2 = xyToScreen(v.n2.x,v.n2.y)
 		love.graphics.line(sx1,sy1,sx2,sy2)
 	end
+	
+	-- draw potential connections
+	if love.keyboard.isDown('tab') then
+		love.graphics.setLineWidth(2)
+		love.graphics.setColor(colors.node)
+		for i,n1 in ipairs(nodes) do
+			local sx1,sy1 =xyToScreen(n1.x,n1.y)
+			for j,n2 in ipairs(n1.neighbors) do
+				if n2.idx < n1.idx then
+					local sx2,sy2 =xyToScreen(n2.x,n2.y)
+					love.graphics.line(sx1,sy1,sx2,sy2)
+				end
+			end			
+		end
+	end
 end
 
 local function drawNodes()
@@ -154,9 +169,10 @@ local function drawNodes()
 		end
 		drawShape(sx,sy,thisColor,v.shape,v.angle)
 		-- draw number of connections on top
-		love.graphics.setFont(tinyFont)
-		love.graphics.setColor(colors.gray)
-		love.graphics.printf(v.connections,sx-20,sy-8,40,'center')
+		drawCenteredText(v.connections,sx,sy)
+		--love.graphics.setFont(tinyFont)
+		--love.graphics.setColor(colors.gray)
+		--love.graphics.printf(v.connections,sx-20,sy-8,40,'center')
 	end
 end
 

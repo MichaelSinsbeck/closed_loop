@@ -6,11 +6,11 @@ Todos:
 - Sind alle Knoten mit allen Verbunden?
 - Rotation der Knoten schlauer lösen
 - Implement save system for progress
-- Winning a level and next level
 - Make animations independent of computer speed (use dt)
 - Flashy animation at start/end of each level
 - Beschränkung auf 12 Richtungen?
 - Berechnung der sx,sy-koordinaten beim erstellen eines knotens
 - Screenkoordinaten x und y nennen, interne Koordinaten anders
 - Redundante Linien verbieten
-- Tutorialsystem einbauen
+- Rätsellogik korrigieren (insbesondere Visual clues)
+- [tab] Taste implementieren

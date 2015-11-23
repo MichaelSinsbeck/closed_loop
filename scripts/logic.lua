@@ -19,7 +19,8 @@ end
 
 function insertNode(x,y,shape,connections)
 	connections = connections or 2
-	local newNode = {x=x,y=y,shape=shape,connections = connections,cursor=false,lines={},angle=0, targetAngle=0,neighbors={}}
+	local idx = #nodes + 1
+	local newNode = {x=x,y=y,shape=shape,connections = connections,cursor=false,lines={},angle=0, targetAngle=0,neighbors={},idx=idx}
 	table.insert(nodes,newNode)
 	
 	local sx1,sy1 = xyToScreen(x,y)

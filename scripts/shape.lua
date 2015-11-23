@@ -17,7 +17,7 @@ function initShapes()
 	-- circle
 	outline[1] = {}
 	local nSeg = 40
-	local factor = 0.75
+	local factor = 0.8
 	for i=0,nSeg-1 do
 		outline[1][2*i+1] = math.sin(i*math.pi*2/nSeg) * factor
 		outline[1][2*i+2] = -math.cos(i*math.pi*2/nSeg) * factor
@@ -114,6 +114,12 @@ function initShapes()
 		insides[i] = love.math.triangulate(outline[i])
 		end
 	end
+end
+
+function drawCenteredText(text,x,y)
+	love.graphics.setFont(tinyFont)
+	love.graphics.setColor(colors.gray)
+	love.graphics.printf(text,x-200,y-10,400,'center')
 end
 
 function drawShape(x,y,colorName,shapeIdx,angle)

@@ -24,7 +24,7 @@ function love.load()
 	
 	largeFont = love.graphics.newFont('font/MEgalopolisExtra.otf',50)	
 	smallFont = love.graphics.newFont('font/MEgalopolisExtra.otf',20)
-	tinyFont = love.graphics.newFont('font/MEgalopolisExtra.otf',14)
+	tinyFont = love.graphics.newFont('font/MEgalopolisExtra.otf',16)
 	
 	size = 3
 	gridSize = 70
@@ -38,7 +38,7 @@ function love.load()
 	initShapes()
 	love.graphics.setBackgroundColor(colors.bg)
 	nodes = {}
-	for x = -size,size do
+	--[[for x = -size,size do
 		local lb,ub = yBound(x,size)
 		for y = lb,ub do
 			if love.math.random(2) == 1 then
@@ -46,7 +46,7 @@ function love.load()
 			end
 			--nodes[#nodes+1] = {x=x,y=y,shape=3,cursor=false,lines={}}
 		end
-	end
+	end--]]
 	
 	--[[ Testlevel
 	nodes[1] = {x=0,y=0,shape=1,cursor=false,lines={}}

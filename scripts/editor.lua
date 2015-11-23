@@ -7,7 +7,7 @@ local function outputLevel()
 	print("addText('')")
 	for i,p in ipairs(gridPoints) do
 		if p.node then
-			print('addNode(' .. p.x .. ',' .. p.y .. ',' .. p.node .. ')')
+			print('addNode(' .. p.x .. ',' .. p.y .. ',' .. p.node .. ','.. p.connections.. ')')
 		end
 	end
 end
