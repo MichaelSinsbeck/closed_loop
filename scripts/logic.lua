@@ -13,6 +13,7 @@ detectCrossings
 --]]
 
 local angleConstraints = {12,6,4} -- circle, hexagon, square
+local everythingConnected = false
 
 function clearLevel()
 	nodes = {}
@@ -90,6 +91,7 @@ function checkWin()
 		levelWon = levelWon and v.okCrossed
 	end
 	-- check connectivity
+	levelWon = levelWon and everythingConnected
 	
 	-- check numbers
 	for i,v in ipairs(nodes) do
@@ -98,12 +100,51 @@ function checkWin()
 	
 end
 
-function checkEverything()s
+function checkEverything()
 	countLines()
 	checkAngles()
 	detectCrossings()
 	assignAngles()
+	checkConnectivity()
 	checkWin()
+end
+
+function checkConnectivity()
+	if #nodes < 2 then
+	  everythingConnected = true
+	  return
+	end
+	local A = {} -- list of unvisited nodes
+	local B = {} -- list of visited nodes, whose neighbors have to be checked
+	B[nodes[1]] = true
+	for i = 2,#nodes do
+		A[nodes[i]] = true
+	end
+	while not (next(B)==nil) do
+		local x = next(B)
+		B[x] = nil
+		for i,l in ipairs(lines) do
+			if l.n1 == x then
+				local n = l.n2
+				if A[n] then
+					B[n] = true
+					A[n] = nil
+				end
+			elseif l.n2 == x then
+				local n = l.n1
+				if A[n] then
+					B[n] = true
+					A[n] = nil
+				end
+			end
+		end
+	end
+	
+	if next(A) then
+		everythingConnected = false
+	else
+		everythingConnected = true
+	end
 end
 
 function countLines()
