@@ -17,7 +17,7 @@ function initShapes()
 	-- circle
 	outline[1] = {}
 	local nSeg = 40
-	local factor = 0.8
+	local factor = 0.85
 	for i=0,nSeg-1 do
 		outline[1][2*i+1] = math.sin(i*math.pi*2/nSeg) * factor
 		outline[1][2*i+2] = -math.cos(i*math.pi*2/nSeg) * factor

@@ -12,6 +12,8 @@ detectCrossings
 
 --]]
 
+local angleConstraints = {12,6,4} -- circle, hexagon, square
+
 function clearLevel()
 	nodes = {}
 	lines = {}
@@ -76,11 +78,32 @@ function removeLine(line)
 	end
 end
 
+function checkWin()
+	print('\nChecking win condition\n')
+	levelWon = true
+	-- check Angle conditions
+	for i,v in ipairs(nodes) do
+		levelWon = levelWon and v.okAngle
+	end
+	-- check crossings
+	for i,v in ipairs(lines) do
+		levelWon = levelWon and v.okCrossed
+	end
+	-- check connectivity
+	
+	-- check numbers
+	for i,v in ipairs(nodes) do
+		levelWon = levelWon and v.okCount
+	end
+	
+end
+
 function checkEverything()
 	countLines()
 	checkAngles()
 	detectCrossings()
 	assignAngles()
+	checkWin()
 end
 
 function countLines()
@@ -94,44 +117,35 @@ function countLines()
 	end
 	for i,v in ipairs(nodes) do -- count
 		v.count = #v.lines
+		v.okCount = (v.count == v.connections)
 	end
 end
 
 function checkAngles()
-	for i,v in ipairs(nodes) do
-		v.ok = false
-		if v.count == v.connections then
-			if v.shape == 1 then
-				v.ok = true
-			elseif v.shape == 2 then
-				local dotProduct = math.abs(v.lines[1].nx * v.lines[2].nx + v.lines[1].ny * v.lines[2].ny)
-				--print(dotProduct)
-				if math.abs(dotProduct-0.5) < tol or
-				   math.abs(dotProduct-1) < tol then
-				  v.ok = true
-				end
-			elseif v.shape == 3 then
-				local dotProduct = math.abs(v.lines[1].nx * v.lines[2].nx + v.lines[1].ny * v.lines[2].ny)
-
-				if math.abs(dotProduct) < tol or
-				   math.abs(dotProduct-1) < tol then
-				  v.ok=true
-				end
+	for i,n in ipairs(nodes) do
+		n.okAngle = true
+		local nLines = #n.lines
+		if nLines == 0 then break end
+	
+		local divisor = math.pi*2 / angleConstraints[n.shape]
+		local l1 = n.lines[1]
+		local angle1 = math.atan2(l1.ny,l1.nx)
+		for j = 2,nLines do
+			local l2 = n.lines[j]
+			local angle2 = math.atan2(l2.ny,l2.nx)
+			local diffAngle = angle2-angle1
+			local roundedAngle = math.floor(diffAngle/divisor+0.5)*divisor
+			if math.abs(roundedAngle-diffAngle) > tol then
+				n.okAngle = false
+				return
 			end
-		end
-	end
-	levelWon = true
-	for i,v in ipairs(nodes) do
-		levelWon = levelWon and v.ok
-	end
-	for i,v in ipairs(lines) do
-		levelWon = levelWon and (not v.crossed)
+		end		
 	end
 end
 
 function detectCrossings()
-	for i=1,#lines do
-		lines[i].crossed = false
+	for i,l in ipairs(lines) do
+		l.okCrossed = true
 	end
 	for i = 1,#lines do
 		for j = i+1,#lines do
@@ -152,8 +166,8 @@ function detectCrossings()
 
 			if prod1 <= 0 and prod2 <= 0 then
 				if not (prod1 == 0 and prod2 == 0) then
-					l1.crossed = true
-					l2.crossed = true				
+					l1.okCrossed = false
+					l2.okCrossed = false
 				end
 			end
 		end

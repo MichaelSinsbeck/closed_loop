@@ -160,9 +160,7 @@ local function drawNodes()
 		if v.cursor then
 			thisColor = 'yellow'
 
-		elseif v.count > 2 then
-			thisColor = 'red'
-		elseif v.ok then
+		elseif v.okCount and v.okAngle then
 			thisColor = 'green'
 		else
 			thisColor = 'gray'

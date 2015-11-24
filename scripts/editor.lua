@@ -22,10 +22,11 @@ function editor.draw()
 	for i,p in ipairs(gridPoints) do
 		if p.node then
 			-- draw node
-			 drawShape(p.sx,p.sy,'gray',p.node)
-			love.graphics.setFont(tinyFont)
-			love.graphics.setColor(colors.gray)
-			love.graphics.printf(p.connections,p.sx-20,p.sy-8,40,'center')			 
+			drawShape(p.sx,p.sy,'gray',p.node)
+			drawCenteredText(p.connections,p.sx,p.sy)
+			--love.graphics.setFont(tinyFont)
+			--love.graphics.setColor(colors.gray)
+			--love.graphics.printf(p.connections,p.sx-20,p.sy-8,40,'center')			 
 		else
 			-- draw grid point otherwise
 			love.graphics.setColor(colors.node)
