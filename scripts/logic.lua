@@ -79,7 +79,7 @@ function removeLine(line)
 end
 
 function checkWin()
-	print('\nChecking win condition\n')
+	--print('\nChecking win condition\n')
 	levelWon = true
 	-- check Angle conditions
 	for i,v in ipairs(nodes) do
@@ -98,7 +98,7 @@ function checkWin()
 	
 end
 
-function checkEverything()
+function checkEverything()s
 	countLines()
 	checkAngles()
 	detectCrossings()
@@ -125,21 +125,22 @@ function checkAngles()
 	for i,n in ipairs(nodes) do
 		n.okAngle = true
 		local nLines = #n.lines
-		if nLines == 0 then break end
-	
-		local divisor = math.pi*2 / angleConstraints[n.shape]
-		local l1 = n.lines[1]
-		local angle1 = math.atan2(l1.ny,l1.nx)
-		for j = 2,nLines do
-			local l2 = n.lines[j]
-			local angle2 = math.atan2(l2.ny,l2.nx)
-			local diffAngle = angle2-angle1
-			local roundedAngle = math.floor(diffAngle/divisor+0.5)*divisor
-			if math.abs(roundedAngle-diffAngle) > tol then
-				n.okAngle = false
-				return
+		if nLines >= 2 then
+		
+			local divisor = math.pi*2 / angleConstraints[n.shape]
+			local l1 = n.lines[1]
+			local angle1 = math.atan2(l1.ny,l1.nx)
+			for j = 2,nLines do
+				local l2 = n.lines[j]
+				local angle2 = math.atan2(l2.ny,l2.nx)
+				local diffAngle = angle2-angle1
+				local roundedAngle = math.floor(diffAngle/divisor+0.5)*divisor
+				if math.abs(roundedAngle-diffAngle) > tol then
+					n.okAngle = false
+					return
+				end
 			end
-		end		
+		end	
 	end
 end
 

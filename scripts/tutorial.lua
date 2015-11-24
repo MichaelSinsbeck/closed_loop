@@ -73,6 +73,7 @@ function tutorial.draw()
 	-- draw 2 grid
 		local offset = 2.5*gridSize
 		local radius = 3
+		love.graphics.setColor(colors.node)
 		for x = -2,2 do
 		local lb,ub = yBound(x,2)
 			for y = lb,ub do

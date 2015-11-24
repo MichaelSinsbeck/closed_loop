@@ -68,7 +68,7 @@ end
 function campaign.loadLevels()
 	newChapter('Introduction')
 	
-	newLevel('Hello')
+	newLevel('Level 1.1')
 	--addText('Click the nodes to form a closed circuit')
 	addTutorial(1)
 	addNode(-2,-1,1,1)
@@ -77,7 +77,7 @@ function campaign.loadLevels()
 	addNode(1,2,1,1)
 
 
-	newLevel('Directions')
+	newLevel('Level 1.2')
 	--addText('Line segments may not cross')
 	addTutorial(2)
 	addNode(-2,-1,1,1)

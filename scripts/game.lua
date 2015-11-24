@@ -125,10 +125,10 @@ local function drawLines()
 	for i,v in ipairs(lines) do
 		if v.cursor then
 			love.graphics.setColor(colors.yellow)
-		elseif v.crossed then
-			love.graphics.setColor(colors.red)
+		elseif v.okCrossed then
+			love.graphics.setColor(colors.black)
 		else
-			love.graphics.setColor(colors.black)		
+			love.graphics.setColor(colors.red)		
 		end
 		love.graphics.setLineWidth(4)
 		sx1,sy1 = xyToScreen(v.n1.x,v.n1.y)
@@ -295,8 +295,11 @@ function game.mousepressed(x,y,key)
 				local sx2,sy2 = xyToScreen(startNode.x,startNode.y)
 				if admissibleAngle(sx1,sy1,sx2,sy2) then
 					insertLine(startNode,activeNode)
-					countLines()
-					if love.keyboard.isDown('rctrl','lctrl') then
+					
+					--countLines()
+					--v.okCount
+					--if love.keyboard.isDown('rctrl','lctrl') then
+					if activeNode.count < activeNode.connections then
 						startNode = activeNode  -- continue drawing a line
 					else
 						drawingLine = false

@@ -12,6 +12,7 @@ Todos:
 - Berechnung der sx,sy-koordinaten beim erstellen eines knotens
 - Screenkoordinaten x und y nennen, interne Koordinaten anders
 - Rätsellogik korrigieren (insbesondere Visual clues)
+- Connectivity check implementieren
 
 
 Rules:

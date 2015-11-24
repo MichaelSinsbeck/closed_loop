@@ -123,7 +123,7 @@ function drawCenteredText(text,x,y)
 end
 
 function drawShape(x,y,colorName,shapeIdx,angle)
-	local thisScale = scale or 0.3
+	local thisScale = scale or 0.4
 	thisScale = thisScale * 50
 	angle = angle or 0
 	local lineWidth = 5
