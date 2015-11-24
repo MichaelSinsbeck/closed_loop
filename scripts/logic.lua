@@ -40,6 +40,13 @@ function insertNode(x,y,shape,connections)
 end
 
 function insertLine(node1,node2)
+	-- check, if this line does already exist
+	for i,l in ipairs(lines) do
+		if (l.n1 == node1 and l.n2 == node2) or
+		   (l.n1 == node2 and l.n2 == node1) then
+		  return
+		end
+	end
 	local sx1,sy1 = xyToScreen(node1.x,node1.y)
 	local sx2,sy2 = xyToScreen(node2.x,node2.y)
 	local tx,ty = sx2-sx1,sy2-sy1
